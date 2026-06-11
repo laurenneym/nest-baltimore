@@ -1,0 +1,344 @@
+/* ============================================================
+   Founders Without Borders — Design Tokens
+   Colors, type, spacing, radii, shadows.
+   Load Google Fonts before this file:
+     Instrument Serif (400, italic)
+     Newsreader (300, 400, 500, italic)
+     Geist (400, 500, 600, 700)
+     Geist Mono (400, 500)
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap");
+
+:root {
+  /* ========== PAPER / SURFACE ========== */
+  --paper:        #F4EEE2;  /* primary background — warm cream, like aged stock */
+  --paper-2:      #EBE3D1;  /* secondary surface — slightly darker cream */
+  --paper-3:      #DCD2BB;  /* tertiary surface, hairlines, dividers */
+  --paper-white:  #FAF6EE;  /* lightest — used for cards on cream */
+  --bone:         #FFFCF5;  /* pure paper, for print and elevated surfaces */
+
+  /* ========== INK ========== */
+  --ink:          #1C1814;  /* primary text — warm near-black */
+  --ink-2:        #3A322A;  /* body text, less emphatic */
+  --ink-3:        #6B5F52;  /* muted, captions, metadata */
+  --ink-4:        #9A8E7E;  /* placeholder, disabled */
+  --ink-line:     rgba(28, 24, 20, 0.12);  /* hairlines */
+  --ink-line-2:   rgba(28, 24, 20, 0.22);  /* stronger borders */
+
+  /* ========== BRAND ACCENTS ========== */
+  --terracotta:   #C75D3A;  /* primary accent — burnt orange, warmth */
+  --terracotta-2: #A84A2B;  /* hover / press */
+  --terracotta-3: #E68B66;  /* tint, soft */
+  --ochre:        #D9A441;  /* mustard / sun — secondary accent */
+  --ochre-2:     #B98729;
+  --moss:         #2F4A37;  /* deep forest green — calm, grounded */
+  --moss-2:       #1F3526;
+  --moss-3:       #5C7A65;
+  --postcard:     #4A6F8A;  /* faded blue — sky / sea */
+  --postcard-2:   #355368;
+  --rust:         #8A3A1F;  /* darker terracotta for type accents */
+  --plum:         #6B3B4F;  /* used sparingly — editorial pull-quotes */
+
+  /* ========== SEMANTIC ========== */
+  --fg-1:         var(--ink);
+  --fg-2:         var(--ink-2);
+  --fg-3:         var(--ink-3);
+  --fg-4:         var(--ink-4);
+  --fg-inverse:   var(--paper-white);
+
+  --bg-1:         var(--paper);
+  --bg-2:         var(--paper-2);
+  --bg-3:         var(--paper-3);
+  --bg-card:      var(--paper-white);
+  --bg-elevated:  var(--bone);
+  --bg-inverse:   var(--ink);
+
+  --accent:       var(--terracotta);
+  --accent-hover: var(--terracotta-2);
+  --accent-tint:  var(--terracotta-3);
+
+  --link:         var(--rust);
+  --success:      var(--moss);
+  --warning:      var(--ochre-2);
+  --danger:       #B33A2E;
+  --info:         var(--postcard);
+
+  --border:       var(--ink-line);
+  --border-2:     var(--ink-line-2);
+
+  /* ========== TYPE FAMILIES ========== */
+  --font-display: "Instrument Serif", "Newsreader", Georgia, serif;
+  --font-serif:   "Newsreader", "Source Serif 4", Georgia, serif;
+  --font-sans:    "Geist", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:    "Geist Mono", "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+
+  /* ========== TYPE SCALE — fluid editorial ========== */
+  --fs-hairline:  11px;
+  --fs-caption:   12px;
+  --fs-small:     14px;
+  --fs-body:      16px;
+  --fs-body-lg:   18px;
+  --fs-lead:      21px;
+  --fs-h6:        16px;
+  --fs-h5:        20px;
+  --fs-h4:        26px;
+  --fs-h3:        34px;
+  --fs-h2:        46px;
+  --fs-h1:        64px;
+  --fs-display:   96px;
+  --fs-hero:      128px;
+
+  --lh-tight:     1.05;
+  --lh-snug:      1.18;
+  --lh-normal:    1.35;
+  --lh-relaxed:   1.55;
+  --lh-loose:     1.7;
+
+  --tr-tight:     -0.025em;
+  --tr-snug:      -0.015em;
+  --tr-normal:    0;
+  --tr-loose:     0.04em;
+  --tr-wide:      0.12em;   /* used for eyebrows / labels */
+  --tr-widest:    0.22em;
+
+  /* ========== SPACING ========== */
+  --space-0:   0;
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+  --space-20:  80px;
+  --space-24:  96px;
+  --space-32:  128px;
+
+  /* ========== RADII ========== */
+  --r-none:    0;
+  --r-xs:      2px;
+  --r-sm:      4px;       /* default for inputs, tight cards */
+  --r-md:      8px;       /* buttons, mid-cards */
+  --r-lg:      14px;      /* cards */
+  --r-xl:      20px;      /* feature cards */
+  --r-2xl:     28px;
+  --r-pill:    999px;
+  --r-circle:  50%;
+
+  /* ========== SHADOWS — soft, paper-like ========== */
+  /* All shadows lean warm (cast through cream paper) */
+  --shadow-1:  0 1px 2px rgba(28, 24, 20, 0.04);
+  --shadow-2:  0 2px 6px rgba(28, 24, 20, 0.06), 0 1px 2px rgba(28, 24, 20, 0.04);
+  --shadow-3:  0 8px 20px rgba(28, 24, 20, 0.08), 0 2px 4px rgba(28, 24, 20, 0.05);
+  --shadow-4:  0 18px 40px rgba(28, 24, 20, 0.12), 0 4px 8px rgba(28, 24, 20, 0.06);
+  --shadow-deep: 0 40px 80px rgba(28, 24, 20, 0.18), 0 8px 16px rgba(28, 24, 20, 0.08);
+
+  /* Inner shadow used on press states + insets */
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(28, 24, 20, 0.06);
+  --shadow-press: inset 0 2px 4px rgba(28, 24, 20, 0.12);
+
+  /* ========== MOTION ========== */
+  --ease-out:    cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast:    140ms;
+  --dur-mid:     260ms;
+  --dur-slow:    480ms;
+  --dur-ambient: 900ms;
+
+  /* ========== LAYOUT ========== */
+  --content-narrow: 640px;   /* article body */
+  --content:        960px;   /* default */
+  --content-wide:   1180px;
+  --content-bleed:  1480px;
+}
+
+/* ============================================================
+   Base element styles — semantic resets that consume tokens
+   ============================================================ */
+html, body {
+  background: var(--bg-1);
+  color: var(--fg-1);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Display headings — use Instrument Serif, soft italic permitted */
+.display, .h-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-display);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-tight);
+  color: var(--fg-1);
+}
+
+h1, .h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-h1);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-tight);
+  color: var(--fg-1);
+  margin: 0;
+  text-wrap: balance;
+}
+
+h2, .h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tr-snug);
+  color: var(--fg-1);
+  margin: 0;
+  text-wrap: balance;
+}
+
+h3, .h3 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--fs-h3);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tr-snug);
+  color: var(--fg-1);
+  margin: 0;
+}
+
+h4, .h4 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--fs-h4);
+  line-height: var(--lh-snug);
+  color: var(--fg-1);
+  margin: 0;
+}
+
+h5, .h5 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--fs-h5);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tr-snug);
+  color: var(--fg-1);
+  margin: 0;
+}
+
+h6, .h6 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--fs-h6);
+  line-height: var(--lh-normal);
+  color: var(--fg-1);
+  margin: 0;
+}
+
+p, .body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-relaxed);
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+
+.lead {
+  font-family: var(--font-serif);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-relaxed);
+  font-weight: 300;
+  color: var(--fg-2);
+  font-style: italic;
+}
+
+.editorial {
+  font-family: var(--font-serif);
+  font-size: var(--fs-body-lg);
+  line-height: var(--lh-loose);
+  color: var(--fg-2);
+  font-weight: 400;
+}
+
+/* Eyebrow / section label — small wide-tracked caps */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--fs-hairline);
+  font-weight: 600;
+  letter-spacing: var(--tr-widest);
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+
+.caption {
+  font-family: var(--font-sans);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-normal);
+  color: var(--fg-3);
+}
+
+/* Numbers + folio — monospaced for indices */
+.folio, .num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "ss01";
+  letter-spacing: 0.02em;
+}
+
+code, .code, pre {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  background: var(--paper-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xs);
+  padding: 0.12em 0.4em;
+  color: var(--ink-2);
+}
+
+a {
+  color: var(--link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(138, 58, 31, 0.4);
+  transition: color var(--dur-fast) var(--ease-out),
+              text-decoration-color var(--dur-fast) var(--ease-out);
+}
+a:hover {
+  color: var(--ink);
+  text-decoration-color: var(--ink);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: var(--space-8) 0;
+}
+
+/* Drop-cap — editorial flourish for long-form articles */
+.has-dropcap::first-letter {
+  font-family: var(--font-display);
+  font-size: 4.2em;
+  line-height: 0.86;
+  float: left;
+  margin: 0.08em 0.08em 0 -0.04em;
+  color: var(--terracotta);
+}
+
+/* Pull-quote — editorial */
+.pullquote {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-style: italic;
+  line-height: var(--lh-snug);
+  color: var(--fg-1);
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  padding: var(--space-6) 0;
+  text-wrap: balance;
+}
