@@ -1481,6 +1481,7 @@ Object.assign(window, {
 // real concept (Chef Loic Sany; modern speakeasy; 21 N. Eutaw St.).
 
 window.NEST = {
+  reserveUrl: "https://posh.vip/e/nest-baltimore-grand-opening",
   menuPdf: "https://drive.google.com/file/d/1lckNMAJL45jn_xd-_sB0wQdNi9hTZ3FV/view",
   address: {
     line1: "21 N. Eutaw Street",
@@ -1493,10 +1494,10 @@ window.NEST = {
     instagramUrl: "https://www.instagram.com/nestbaltimore/",
   },
   hours: [
-    ["Wednesday — Thursday", "6:00 pm — 12:00 am"],
+    ["Thursday", "6:00 pm — 12:00 am"],
     ["Friday — Saturday", "6:00 pm — 1:00 am"],
     ["Sunday brunch", "12:00 pm — 4:00 pm"],
-    ["Monday — Tuesday", "Closed"],
+    ["Monday — Wednesday", "Closed"],
   ],
 
   // Hero / brand
@@ -1687,7 +1688,7 @@ function Footer({ go }) {
             <h6>More</h6>
             <a href="#/menu" onClick={(e) => { e.preventDefault(); go("menu"); }}>Menu</a>
             <a href="#/about" onClick={(e) => { e.preventDefault(); go("about"); }}>About</a>
-            <a href="#/reserve" onClick={(e) => { e.preventDefault(); go("reserve"); }}>Reservations</a>
+            <a href={N.reserveUrl} target="_blank" rel="noopener noreferrer">Reservations</a>
             <a href={N.contact.instagramUrl} target="_blank" rel="noreferrer">{N.contact.instagram}</a>
           </div>
         </div>
@@ -2288,6 +2289,11 @@ function App() {
   }, []);
 
   const go = (path) => {
+    // Reservations are handled by Posh (grand-opening ticketing) — open externally.
+    if (path === "reserve") {
+      window.open(window.NEST.reserveUrl, "_blank", "noopener,noreferrer");
+      return;
+    }
     if (path === "home") location.hash = "#/";
     else location.hash = "#/" + path;
     if (getRoute() === route) window.scrollTo(0, 0);
