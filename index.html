@@ -36,7 +36,7 @@
       "addressCountry": "US"
     },
     "openingHoursSpecification": [
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "18:00", "closes": "00:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "16:00", "closes": "00:00" },
       { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Friday","Saturday"], "opens": "18:00", "closes": "01:00" },
       { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "12:00", "closes": "16:00" }
     ],
@@ -881,6 +881,23 @@ html.js .reveal.room-frame.in .img { animation: roomdrift 14s ease-in-out 0s inf
 @media (max-width: 420px) {
   .reserve-grid3 { grid-template-columns: 1fr !important; }
 }
+
+/* ===== OpenTable reservation widget ===== */
+.ot-card {
+  background: var(--nest-surface);
+  border: 1px solid var(--nest-line);
+  padding: 32px;
+}
+.ot-embed {
+  min-height: 280px;
+  display: flex;
+  justify-content: center;
+}
+/* the widget injects its own light box; give it room and center it */
+.ot-embed iframe,
+.ot-embed > div {
+  max-width: 100%;
+}
 .field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23978A77' stroke-width='1.5'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 15px center; }
 
 /* ===== Footer ===== */
@@ -1517,7 +1534,8 @@ Object.assign(window, {
 // real concept (Chef Loic Sany; modern speakeasy; 21 N. Eutaw St.).
 
 window.NEST = {
-  reserveUrl: "https://posh.vip/e/nest-baltimore-grand-opening",
+  reserveUrl: "https://www.opentable.com/r/nest-reservations-baltimore?restref=1529395&lang=en-US&ot_source=Restaurant%20website",
+  openTableRid: "1529395",
   menuPdf: "https://drive.google.com/file/d/1lckNMAJL45jn_xd-_sB0wQdNi9hTZ3FV/view",
   address: {
     line1: "21 N. Eutaw Street",
@@ -1530,10 +1548,14 @@ window.NEST = {
     instagramUrl: "https://www.instagram.com/nestbaltimore/",
   },
   hours: [
-    ["Thursday", "6:00 pm — 12:00 am"],
+    ["Thursday", "4:00 pm — 12:00 am", "Happy hour · 4 — 7 pm"],
     ["Friday — Saturday", "6:00 pm — 1:00 am"],
     ["Sunday brunch", "12:00 pm — 4:00 pm"],
     ["Monday — Wednesday", "Closed"],
+  ],
+  hoursNotes: [
+    ["Kitchen closes", "10:00 pm"],
+    ["Bar", "Open until 1:00 am"],
   ],
 
   // Hero / brand
@@ -2124,7 +2146,24 @@ window.About = About;
 </script>
   <script type="text/babel">
 // NEST — Visit + Reserve pages.
-const { useState: useStateVR } = React;
+const { useState: useStateVR, useEffect: useEffectVR, useRef: useRefVR } = React;
+
+// OpenTable reservation widget — injects its iframe into the host node.
+// Loads on the live domain (third-party scripts may be blocked in preview).
+function OpenTableWidget() {
+  const ref = useRefVR(null);
+  useEffectVR(() => {
+    const host = ref.current;
+    if (!host) return;
+    host.innerHTML = "";
+    const s = document.createElement("script");
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = "//www.opentable.com/widget/reservation/loader?rid=1529395&type=standard&theme=standard&color=1&dark=false&iframe=true&domain=com&lang=en-US&newtab=false&ot_source=Restaurant%20website&logo_pid=95231463&cfe=true";
+    host.appendChild(s);
+  }, []);
+  return <div className="ot-embed" ref={ref}></div>;
+}
 
 function Visit({ go }) {
   const N = window.NEST;
@@ -2174,9 +2213,20 @@ function Visit({ go }) {
             <div>
               <h3 className="serif-h" style={{ fontSize: "clamp(24px,2.6vw,34px)", marginBottom: 8 }}>Hours</h3>
               <dl style={{ margin: 0 }}>
-                {N.hours.map(([d, h], i) => (
-                  <div className="info-row" key={i} style={{ gridTemplateColumns: "1fr auto" }}>
-                    <dt style={{ color: "var(--nest-fg)", fontFamily: "var(--font-serif)", fontWeight: 400, fontSize: 16, letterSpacing: 0, textTransform: "none" }}>{d}</dt>
+                {N.hours.map(([d, h, sub], i) => (
+                  <div className="info-row" key={i} style={{ gridTemplateColumns: "1fr auto", padding: sub ? "22px 0 14px" : "22px 0" }}>
+                    <dt style={{ color: "var(--nest-fg)", fontFamily: "var(--font-serif)", fontWeight: 400, fontSize: 16, letterSpacing: 0, textTransform: "none" }}>
+                      {d}
+                      {sub && <span style={{ display: "block", marginTop: 5, color: "var(--accent)", fontFamily: "var(--font-sans)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>{sub}</span>}
+                    </dt>
+                    <dd className="sub" style={{ fontFamily: "var(--font-mono)", fontSize: 14 }}>{h}</dd>
+                  </div>
+                ))}
+              </dl>
+              <dl style={{ margin: "10px 0 0" }}>
+                {N.hoursNotes.map(([d, h], i) => (
+                  <div className="info-row" key={i} style={{ gridTemplateColumns: "1fr auto", padding: "14px 0" }}>
+                    <dt style={{ color: "var(--accent)", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase" }}>{d}</dt>
                     <dd className="sub" style={{ fontFamily: "var(--font-mono)", fontSize: 14 }}>{h}</dd>
                   </div>
                 ))}
@@ -2192,14 +2242,8 @@ function Visit({ go }) {
   );
 }
 
-function Reserve({ go, toast }) {
+function Reserve({ go }) {
   const N = window.NEST;
-  const [form, setForm] = useStateVR({ name: "", email: "", date: "", time: "19:00", party: "2", notes: "" });
-  const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
-  const submit = (e) => {
-    e.preventDefault();
-    toast("Request sent — we'll confirm by email.");
-  };
   return (
     <div className="page">
       <section className="section-sm" style={{ paddingTop: 80 }}>
@@ -2217,41 +2261,19 @@ function Reserve({ go, toast }) {
       <section className="section" style={{ paddingTop: 40 }}>
         <div className="wrap">
           <div className="grid-2" style={{ alignItems: "start", gap: 56 }}>
-            <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-              <div className="field">
-                <label>Name</label>
-                <input value={form.name} onChange={set("name")} placeholder="Your name" required />
+            <div className="ot-card">
+              <h3 className="serif-h" style={{ fontSize: "clamp(24px,2.6vw,32px)" }}>Reserve your table</h3>
+              <p className="body" style={{ marginTop: 8, marginBottom: 22, fontSize: 15 }}>
+                Book instantly through OpenTable.
+              </p>
+              <OpenTableWidget />
+              <div style={{ marginTop: 22 }}>
+                <Btn kind="accent" href={N.reserveUrl} target="_blank">Reserve on OpenTable</Btn>
               </div>
-              <div className="field">
-                <label>Email</label>
-                <input type="email" value={form.email} onChange={set("email")} placeholder="you@email.com" required />
-              </div>
-              <div className="reserve-grid3" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
-                <div className="field">
-                  <label>Date</label>
-                  <input type="date" value={form.date} onChange={set("date")} required />
-                </div>
-                <div className="field">
-                  <label>Time</label>
-                  <select value={form.time} onChange={set("time")}>
-                    {["18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00"].map((t) => <option key={t} value={t}>{t}</option>)}
-                  </select>
-                </div>
-                <div className="field">
-                  <label>Party</label>
-                  <select value={form.party} onChange={set("party")}>
-                    {["1","2","3","4","5","6"].map((p) => <option key={p} value={p}>{p}{p === "6" ? "+" : ""}</option>)}
-                  </select>
-                </div>
-              </div>
-              <div className="field">
-                <label>Notes (optional)</label>
-                <textarea rows="3" value={form.notes} onChange={set("notes")} placeholder="Occasion, seating preference, allergies"></textarea>
-              </div>
-              <div>
-                <Btn kind="accent" size="lg">Request reservation</Btn>
-              </div>
-            </form>
+              <p className="menu-note" style={{ marginTop: 16 }}>
+                Widget not loading? Use the button above to book on OpenTable directly.
+              </p>
+            </div>
 
             <aside>
               <Img src="img/croquettes-cocktail.jpg" alt="NEST" style={{ aspectRatio: "4/5" }} />
@@ -2332,7 +2354,7 @@ function App() {
   }, []);
 
   const go = (path) => {
-    // Reservations are handled by Posh (grand-opening ticketing) — open externally.
+    // Reservations go straight to OpenTable.
     if (path === "reserve") {
       window.open(window.NEST.reserveUrl, "_blank", "noopener,noreferrer");
       return;
